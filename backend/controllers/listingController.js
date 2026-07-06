@@ -1,20 +1,14 @@
-const db = require('../db');
+// ከላይ db.js ፋይልን እናመጣለን (እንደ ፋይሉ መገኛ ርቀት ../db ወይም ./db ሊሆን ይችላል)
+const pool = require('../db'); 
 
-// ለየብቻ ኤክስፖርት ማድረጉ ስህተትን ይቀንሳል
-const getStats = async (req, res) => {
+// የ tree መረጃዎችን ከዳታቤዝ ለማምጣት የምትጠቀምበት ፈንክሽን
+async function getTreeData(req, res) {
     try {
-        const [user] = await db.query("SELECT * FROM users WHERE id = 1");
-        const [listings] = await db.query("SELECT * FROM listings WHERE status = 'available'");
-        
-        res.json({ 
-            user: user[0] || { company_name: "New Company", eco_points: 0 }, 
-            listings: listings 
-        });
+        // ከፑሉ ላይ አንድ ኮኔክሽን በራሱ ተበድሮ ያመጣል፣ ሲጨርስም ይመልሳል
+        const [rows] = await pool.execute('SELECT * FROM የ_tree_ሰንጠረዥ_ስም'); 
+        res.json(rows);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ message: err.message });
     }
-};
-
-// ይህን መስመር በትክክል መኖሩን አረጋግጥ
-module.exports = { getStats };
+    // ምንም አይነት connection.end() እዚህ ጋር አያስፈልግም!
+}

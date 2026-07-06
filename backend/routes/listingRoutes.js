@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
-// ፋይሉ ያለበትን ቦታ ደግመህ አረጋግጥ (../controllers/listingController)
-const listingController = require('../controllers/listingController');
+const pool = require('../db'); // አሁን የፈጠርነውን ፋይል እዚህ ጋር እንጠራዋለን
 
-// እዚህ ጋር listingController.getStats መኖሩን እና ፈንክሽን መሆኑን ያረጋግጣል
-if (listingController && listingController.getStats) {
-    router.get('/dashboard-data', listingController.getStats);
-} else {
-    console.error("Error: listingController.getStats is not defined!");
-}
+// የ tree መረጃዎችን ከMySQL ለማምጣት
+router.get('/trees', async (req, res) => {
+    try {
+        // ከፑሉ ላይ አንድ ኮኔክሽን በራሱ ተበድሮ ያመጣል፣ ሲጨርስም ይመልሳል
+        const [rows] = await pool.execute('SELECT * FROM tree ORDER BY id DESC');
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+    // ምንም አይነት connection.end() ወይም መዝጋት እዚህ አያስፈልግም!
+});
 
 module.exports = router;

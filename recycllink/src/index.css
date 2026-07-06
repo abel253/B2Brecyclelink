@@ -41,7 +41,7 @@
 /* ከገዳቢው 1126px ወደ Full-Width መቀየር */
 #root {
   width: 100%;
-  max-width: 1440px; /* ለትልቅ ስክሪን ተገቢው ስፋት */
+  max-width: 2000px; /* ለትልቅ ስክሪን ተገቢው ስፋት */
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -65,7 +65,7 @@ body {
 /* ሌላው የ #root እና h1, h2 ስታይል እንዳለ ይቆይ */
 #root {
   width: 100%;
-  max-width: 1440px;
+  max-width: 2000px;
   margin: 0 auto;
   min-height: 100svh;
   display: flex;
